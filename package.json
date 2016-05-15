@@ -10,17 +10,13 @@
 	"repository":  "derhuerst/vbb-map",
 	"license":     "ISC",
 	"dependencies": {
-		"queue": "^4",
-		"vbb-osm-relations": "^0.1",
-		"osm-flatten-relation": "^0.1",
-		"ndjson": "^1.4.3",
 		"vbb-parse-line": "^0.1.1",
 		"vbb-util": "^0.9.3",
 		"through2-map": "^2",
-		"wrap-stream": "^2",
-		"duplexer": "^0.1.1",
-		"merge-stream": "^1",
-		"glob": "^7.0.3",
-		"pdfkit": "^0.7.2"
+		"vbb-stations": "^0.4",
+		"pdfkit": "^0.7.2",
+		"vbb-lines": "^0.1",
+		"stream-filter": "^1",
+		"through2": "^2.0.1"
 	}
 }
