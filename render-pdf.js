@@ -4,6 +4,7 @@ const stations = require('vbb-stations')
 const PDF      = require('pdfkit')
 const fs       = require('fs')
 const lines    = require('vbb-lines')
+const filter   = require('stream-filter')
 const through  = require('through2')
 
 const _ = require('./helpers')
@@ -16,9 +17,12 @@ stations('all').on('error', console.error)
 .on('end', () => {
 
 	const pdf = new PDF()
+	pdf.lineCap('round'); pdf.lineJoin('round')
+	pdf.fontSize(1); pdf.lineWidth(.5)
 	pdf.pipe(fs.createWriteStream('rendered/all.pdf'))
 
-	lines({type: 'subway'}) // U6
+	lines('all')
+	.pipe(filter((line) => line.type === 'subway'))
 	.pipe(through.obj(function (line, _, next) {
 		const self = this
 		line.variants = line.variants.map((stations) => {
@@ -35,10 +39,12 @@ stations('all').on('error', console.error)
 
 		let first = true
 		for (let station of variant) {
-			const x = 5 * _.translate.x(station.longitude)
-			const y = 5 * _.translate.y(station.latitude)
+			if (!station) continue
+			const x = _.translate.x(station.longitude)
+			const y = _.translate.y(station.latitude)
 			if (first) {first = false; pdf.moveTo(x, y)}
 			else pdf.lineTo(x, y)
+			pdf.text(station.name, x + 1, y)
 		}
 		pdf.strokeColor(_.color(variant.line))
 		pdf.stroke()

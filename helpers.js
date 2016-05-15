@@ -12,8 +12,8 @@ const top    = 52.6697240587
 const right  = 13.7606105539
 const bottom = 52.3418234221
 const translate = {
-	  x: (x) => (x - left) / (right - left) * 100
-	, y: (y) => (y - top)  / (bottom - top) * 100
+	  x: (x) => (x - left) / (right - left) * 600
+	, y: (y) => (y - top)  / (bottom - top) * 600
 }
 
 const color = (line) => {
