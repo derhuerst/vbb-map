@@ -17,6 +17,7 @@
 		"pdfkit": "^0.7.2",
 		"vbb-lines": "^0.1",
 		"stream-filter": "^1",
-		"through2": "^2.0.1"
+		"through2": "^2.0.1",
+		"vbb-short-station-name": "^0.1"
 	}
 }

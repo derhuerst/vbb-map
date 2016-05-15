@@ -6,6 +6,7 @@ const fs       = require('fs')
 const lines    = require('vbb-lines')
 const filter   = require('stream-filter')
 const through  = require('through2')
+const shorten  = require('vbb-short-station-name')
 
 const _ = require('./helpers')
 
@@ -22,7 +23,7 @@ stations('all').on('error', console.error)
 	pdf.pipe(fs.createWriteStream('rendered/all.pdf'))
 
 	lines('all')
-	.pipe(filter((line) => line.type === 'subway'))
+	.pipe(filter((l) => l.type === 'subway'))
 	.pipe(through.obj(function (line, _, next) {
 		const self = this
 		line.variants = line.variants.map((stations) => {
@@ -44,7 +45,7 @@ stations('all').on('error', console.error)
 			const y = _.translate.y(station.latitude)
 			if (first) {first = false; pdf.moveTo(x, y)}
 			else pdf.lineTo(x, y)
-			pdf.text(station.name, x + 1, y)
+			pdf.text(shorten(station.name), x + 1, y)
 		}
 		pdf.strokeColor(_.color(variant.line))
 		pdf.stroke()
