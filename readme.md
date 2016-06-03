@@ -21,9 +21,7 @@ npm i
 ## Usage
 
 ```shell
-node render-pdf
-# or
-node render-svg
+node render
 ```
 
 
