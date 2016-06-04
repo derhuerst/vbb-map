@@ -4,6 +4,7 @@ const mercator = require('mercator-projection')
 const bbox     = require('german-states-bbox').BE // Berlin
 const parse    = require('vbb-parse-line')
 const colors   = require('vbb-util/lines/colors')
+const products = require('vbb-util/products')
 const map      = require('through2-map')
 
 
@@ -29,6 +30,7 @@ const color = (line) => {
 	line = parse(line)
 	if (colors[line.type] && colors[line.type][line._])
 		return colors[line.type][line._].bg
+	if (products[line.type]) return products[line.type].color
 	return '#333'
 }
 
