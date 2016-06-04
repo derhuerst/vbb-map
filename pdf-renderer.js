@@ -9,6 +9,7 @@ const _ = require('./helpers')
 
 const renderer = () => {
 	const pdf = new PDF()
+	pdf.addPage({margin: 50, size: [_.translate.w, _.translate.h]})
 	pdf.lineCap('round'); pdf.lineJoin('round')
 
 	const renderedSegments = {}
@@ -32,14 +33,17 @@ const renderer = () => {
 	return {
 
 		segment: (line, from, to) => {
-			if (!renderedSegments[from.id + '-' + to.id]) {
-				renderedSegments[from.id + '-' + to.id] = true
-				const x1 = _.translate.x(from.longitude)
-				const y1 = _.translate.y(from.latitude)
-				const x2 = _.translate.x(to.longitude)
-				const y2 = _.translate.y(to.latitude)
+			if (renderedSegments[from.id + '-' + to.id]) return
+			renderedSegments[from.id + '-' + to.id] = true
+
+			const x1 = _.translate.x(from.longitude)
+			const y1 = _.translate.y(from.latitude)
+			const x2 = _.translate.x(to.longitude)
+			const y2 = _.translate.y(to.latitude)
+
+			if (Math.max(x1, x2) <= _.translate.w && Math.min(x1, x2) >= 0
+			 && Math.max(y1, y2) <= _.translate.h && Math.min(y1, y2) >= 0)
 				draw.line(.5, _.color(line.name), x1, y1, x2, y2)
-			}
 
 			stationsToRender[from.id] = from
 			stationsToRender[to.id]   = to
@@ -50,8 +54,11 @@ const renderer = () => {
 				const station = stationsToRender[id]
 				const x = _.translate.x(station.longitude)
 				const y = _.translate.y(station.latitude)
-				draw.circle(x, y, .5, '#000000')
-				draw.text(x + 1, y, shorten(station.name), 2, '#000000')
+				if (x <= _.translate.w && x >= 0
+				 && y <= _.translate.h && y >= 0) {
+					draw.circle(x, y, .5, '#000000')
+					draw.text(x + 2, y, shorten(station.name), 2, '#000000')
+				}
 			}
 			pdf.end()
 			return pdf

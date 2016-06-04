@@ -11,9 +11,12 @@ const left   = bbox[1]
 const top    = bbox[0]
 const right  = bbox[3]
 const bottom = bbox[2]
+const w = 900
+const h = (top - bottom) / (right - left) * w
 const translate = {
-	  x: (x) => (x - left) / (right - left) * 600
-	, y: (y) => (y - top)  / (bottom - top) * 600
+	  w, h
+	, x: (lat) => (lat - left) / (right - left) * w
+	, y: (long) => (1 - (long - bottom)  / (top - bottom)) * h
 }
 
 const color = (line) => {
