@@ -1,16 +1,16 @@
 'use strict'
 
+const bbox     = require('german-states-bbox').BE // Berlin
 const parse    = require('vbb-parse-line')
 const colors   = require('vbb-util/lines/colors')
 const map      = require('through2-map')
 
 
 
-// Berlin bounding box
-const left   = 13.0882097323
-const top    = 52.6697240587
-const right  = 13.7606105539
-const bottom = 52.3418234221
+const left   = bbox[1]
+const top    = bbox[0]
+const right  = bbox[3]
+const bottom = bbox[2]
 const translate = {
 	  x: (x) => (x - left) / (right - left) * 600
 	, y: (y) => (y - top)  / (bottom - top) * 600
