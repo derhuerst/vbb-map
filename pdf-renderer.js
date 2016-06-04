@@ -36,10 +36,8 @@ const renderer = () => {
 			if (renderedSegments[from.id + '-' + to.id]) return
 			renderedSegments[from.id + '-' + to.id] = true
 
-			const x1 = _.translate.x(from.longitude)
-			const y1 = _.translate.y(from.latitude)
-			const x2 = _.translate.x(to.longitude)
-			const y2 = _.translate.y(to.latitude)
+			const {x: x1, y: y1} = _.translate(from.latitude, from.longitude)
+			const {x: x2, y: y2} = _.translate(to.latitude, to.longitude)
 
 			if (Math.max(x1, x2) <= _.translate.w && Math.min(x1, x2) >= 0
 			 && Math.max(y1, y2) <= _.translate.h && Math.min(y1, y2) >= 0)
@@ -52,8 +50,7 @@ const renderer = () => {
 		data: () => {
 			for (let id in stationsToRender) {
 				const station = stationsToRender[id]
-				const x = _.translate.x(station.longitude)
-				const y = _.translate.y(station.latitude)
+				const {x, y} = _.translate(station.latitude, station.longitude)
 				if (x <= _.translate.w && x >= 0
 				 && y <= _.translate.h && y >= 0) {
 					draw.circle(x, y, .5, '#000000')
