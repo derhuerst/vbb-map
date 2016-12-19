@@ -1,6 +1,6 @@
 'use strict'
 
-const mercator = require('mercator-projection')
+const mercator = require('projections/mercator')
 const bbox     = require('german-states-bbox').BE // Berlin
 const parse    = require('vbb-parse-line')
 const colors   = require('vbb-util/lines/colors')
@@ -9,7 +9,7 @@ const map      = require('through2-map')
 
 
 
-const project = (lat, lng) => mercator.fromLatLngToPoint({lat, lng})
+const project = (lat, lon) => mercator({lat, lon})
 
 const left   = project(bbox[0], bbox[1]).x
 const top    = project(bbox[0], bbox[1]).y
