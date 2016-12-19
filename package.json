@@ -13,13 +13,13 @@
 		"german-states-bbox": "^0.2",
 		"mercator-projection": "^0.0.2",
 		"vbb-parse-line": "^0.2",
-		"vbb-util": "^0.9.3",
-		"through2-map": "^2",
-		"vbb-stations": "^0.4",
-		"pdfkit": "^0.7.2",
-		"vbb-lines": "^0.2",
-		"stream-filter": "^1",
-		"through2": "^2.0.1",
-		"vbb-short-station-name": "^0.1"
+		"vbb-util": "^0.10.1",
+		"through2-map": "^3.0.0",
+		"vbb-stations": "^3.0.1",
+		"pdfkit": "^0.8.0",
+		"vbb-lines": "^2.0.1",
+		"stream-filter": "^2.1.0",
+		"through2": "^2.0.3",
+		"vbb-short-station-name": "^0.2.0"
 	}
 }
