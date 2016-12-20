@@ -29,19 +29,19 @@ const renderer = () => {
 		pdf.text(t, x, y)
 	}
 
-	const segment = (line, from, to) => {
-		if (renderedSegments[from.id + '-' + to.id]) return
-		renderedSegments[from.id + '-' + to.id] = true
+	const segment = (line, a, b) => {
+		if (renderedSegments[[a[0], a[1], b[0], b[1]].join('|')]) return
+		renderedSegments[[a[0], a[1], b[0], b[1]].join('|')] = true
 
-		const {x: x1, y: y1} = _.translate(from.latitude, from.longitude)
-		const {x: x2, y: y2} = _.translate(to.latitude, to.longitude)
+		const {x: x1, y: y1} = _.translate(a[0], a[1])
+		const {x: x2, y: y2} = _.translate(b[0], b[1])
 
 		if (Math.max(x1, x2) <= _.translate.w && Math.min(x1, x2) >= 0
 		 && Math.max(y1, y2) <= _.translate.h && Math.min(y1, y2) >= 0)
 			drawLine(.5, _.color(line.name), x1, y1, x2, y2)
 
-		stationsToRender[from.id] = from
-		stationsToRender[to.id]   = to
+		// stationsToRender[a.id] = a
+		// stationsToRender[b.id] = b
 	}
 
 	const data = () => {

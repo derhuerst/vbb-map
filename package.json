@@ -20,6 +20,7 @@
 		"vbb-lines": "^2.0.1",
 		"stream-filter": "^2.1.0",
 		"through2": "^2.0.3",
-		"vbb-short-station-name": "^0.2.0"
+		"vbb-short-station-name": "^0.2.0",
+		"vbb-shapes": "^1.0.0"
 	}
 }
