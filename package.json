@@ -3,7 +3,7 @@
 	"description": "Render VBB lines on a map.",
 	"version":     "0.1.0",
 	"main":        "index.js",
-	"files":       ["index.js"],
+	"files":       ["index.js", "helpers.js", "image-renderer.js", "pdf-renderer.js", "render.js"],
 	"keywords":    ["vbb", "bvg", "berlin", "map"],
 	"author":      "Jannis R <mail@jannisr.de>",
 	"homepage":    "https://github.com/derhuerst/vbb-map",
