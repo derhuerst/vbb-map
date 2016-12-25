@@ -6,6 +6,7 @@ const filter   = require('stream-filter')
 const through  = require('through2')
 const shorten  = require('vbb-short-station-name')
 const shapes = require('vbb-shapes')
+const simplify = require('simplify-path')
 const fs = require('fs')
 const path = require('path')
 
@@ -30,7 +31,7 @@ new Promise((yay, nay) => {
 	const data = {}
 
 	lines('all')
-	// .pipe(filter.obj((l) => l.type === 'subway'))
+	.pipe(filter.obj((l) => l.type === 'subway' || l.type === 'suburban' || l.type === 'tram'))
 	.on('data', (line) => data[line.id] = line)
 	.once('error', nay)
 	.once('end', () => yay(data))
@@ -44,14 +45,15 @@ new Promise((yay, nay) => {
 		const line = lines[shape.lineId]
 		if (!line) return console.error('unknown line', shape.lineId)
 
-		if (line.type === 'bus' || line.type === 'regional' || line.type === 'express') return
-
-		for (let i = 1; i < shape.points.length; i++) {
-			const from = shape.points[i - 1]
-			const to = shape.points[i]
+		const points = simplify(shape.points, .0001)
+		for (let i = 1; i < points.length; i++) {
+			// todo: use simplify-path here
+			const from = points[i - 1]
+			const to = points[i]
 			render.segment(line, from, to)
 		}
 	})
+	.once('error', (e) => nay(e))
 	.once('end', () => yay(render.data()))
 }))
 
