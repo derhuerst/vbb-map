@@ -15,7 +15,7 @@
 		"vbb-parse-line": "^0.2",
 		"vbb-util": "^0.10.1",
 		"through2-map": "^3.0.0",
-		"vbb-stations": "^3.0.1",
+		"vbb-stations": "^4.0.0",
 		"pdfkit": "^0.8.0",
 		"vbb-lines": "^2.0.1",
 		"stream-filter": "^2.1.0",
