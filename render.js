@@ -13,6 +13,11 @@ const path = require('path')
 const _        = require('./helpers')
 const renderer = require('./pdf-renderer')
 
+const showError = (err) => {
+	console.error(err)
+	process.exit(1)
+}
+
 
 
 const all = {}
@@ -61,3 +66,5 @@ new Promise((yay, nay) => {
 	pdf.pipe(fs.createWriteStream(path.join(__dirname, 'rendered/all.pdf')))
 	.on('finish', () => console.log('done'))
 })
+
+.catch(showError)
