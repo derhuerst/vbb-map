@@ -1,25 +1,27 @@
 'use strict'
 
-const stations = require('vbb-stations/full.json')
-const lines    = require('vbb-lines')
-const filter   = require('stream-filter')
+const pump = require('pump')
+const filter = require('stream-filter')
 const through  = require('through2')
-const shorten  = require('vbb-short-station-name')
-const shapes = require('vbb-shapes')
-const simplify = require('simplify-path')
-const fs = require('fs')
 const path = require('path')
+const fs = require('fs')
+const simplify = require('simplify-path')
 
-const _        = require('./helpers')
+const stations = require('vbb-stations/full.json')
+const trips = require('vbb-trips')
+const shapes = require('vbb-shapes')
+
 const renderer = require('./pdf-renderer')
 
 const showError = (err) => {
+	if (!err) return
 	console.error(err)
 	process.exit(1)
 }
 
 
 
+// flatten stations & stops into an id map
 const all = {}
 for (let stationId in stations) {
 	const station = stations[stationId]
@@ -32,39 +34,60 @@ for (let stationId in stations) {
 
 
 
-new Promise((yay, nay) => {
-	const data = {}
-
-	lines('all')
-	.pipe(filter.obj((l) => l.type === 'subway' || l.type === 'suburban' || l.type === 'tram'))
-	.on('data', (line) => data[line.id] = line)
-	.once('error', nay)
-	.once('end', () => yay(data))
-})
+trips.lines(true, 'all')
+.then((lines) => lines.reduce((all, line) => {
+	all[line.id] = line
+	return all
+}, {}))
 
 .then((lines) => new Promise((yay, nay) => {
+
+	const renderedShapes = {} // booleans by id
 	const render = renderer()
 
-	shapes().once('error', nay)
-	.on('data', (shape) => {
-		const line = lines[shape.lineId]
-		if (!line) return console.error('unknown line', shape.lineId)
+	pump(
+		trips.schedules('all'),
+		filter.obj((sched) => {
+			const line = sched.route && sched.route.line ? lines[sched.route.line] : null
+			if (!line) return false
+			sched.route.line = line
 
-		const points = simplify(shape.points, .0001)
+			if (!sched.shape) return false
+
+			// These can be drawn reasonably.
+			return line.product === 'subway' || line.product === 'suburban' || line.product === 'tram'
+		}),
+		filter.async.obj((sched, cb) => {
+			if (renderedShapes[sched.shape]) return cb(false)
+			renderedShapes[sched.shape] = true
+
+			shapes(sched.shape)
+			.then((shape) => {
+				sched.shape = shape
+				cb(null, true)
+			})
+			.catch(cb)
+		}),
+		showError
+	)
+	.on('data', (sched) => {
+		const points = simplify(sched.shape, .0001)
 		for (let i = 1; i < points.length; i++) {
-			// todo: use simplify-path here
 			const from = points[i - 1]
 			const to = points[i]
-			render.segment(line, from, to)
+			render.segment(sched.route.line, from, to)
 		}
 	})
-	.once('error', (e) => nay(e))
 	.once('end', () => yay(render.data()))
+
 }))
 
-.then((pdf) => {
-	pdf.pipe(fs.createWriteStream(path.join(__dirname, 'rendered/all.pdf')))
-	.on('finish', () => console.log('done'))
-})
+.then((pdf) => new Promise((yay, nay) => {
+	const dest = path.join(__dirname, 'rendered/all.pdf')
+
+	pdf.pipe(fs.createWriteStream(dest))
+	.once('error', nay)
+	.once('finish', () => yay())
+}))
 
 .catch(showError)
