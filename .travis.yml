@@ -6,3 +6,4 @@ node_js:
   - '6'
 script:
   - node render.js
+  - ls -lh rendered/all.pdf
