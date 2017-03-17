@@ -82,12 +82,6 @@ trips.lines(true, 'all')
 
 }))
 
-.then((pdf) => new Promise((yay, nay) => {
-	const dest = path.join(__dirname, 'rendered/all.pdf')
-
-	pdf.pipe(fs.createWriteStream(dest))
-	.once('error', nay)
-	.once('finish', () => yay())
-}))
+.then((pdf) => pdf.pipe(process.stdout))
 
 .catch(showError)
