@@ -23,6 +23,6 @@
 		"vbb-shapes": "^2.3.0",
 		"simplify-path": "^1.1.0",
 		"pump": "^1.0.2",
-		"vbb-trips": "^2.0.0"
+		"vbb-trips": "^2.2.0"
 	}
 }
