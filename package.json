@@ -19,7 +19,7 @@
 		"pdfkit": "^0.8.0",
 		"stream-filter": "^2.1.0",
 		"through2": "^2.0.3",
-		"vbb-short-station-name": "^0.2.0",
+		"vbb-short-station-name": "^0.3.0",
 		"vbb-shapes": "^2.3.0",
 		"simplify-path": "^1.1.0",
 		"pump": "^1.0.2",
