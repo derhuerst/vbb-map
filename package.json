@@ -10,7 +10,7 @@
 	"repository":  "derhuerst/vbb-map",
 	"license":     "ISC",
 	"dependencies": {
-		"german-states-bbox": "^0.2",
+		"german-states-bbox": "^1.0.0",
 		"projections": "^0.6.0",
 		"vbb-parse-line": "^0.2",
 		"vbb-util": "^0.10.1",
