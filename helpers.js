@@ -11,10 +11,10 @@ const map      = require('through2-map')
 
 const project = (lat, lon) => mercator({lat, lon})
 
-const left   = project(bbox[0], bbox[1]).x
-const top    = project(bbox[0], bbox[1]).y
-const right  = project(bbox[2], bbox[3]).x
-const bottom = project(bbox[2], bbox[3]).y
+const left   = project(bbox.minLat, bbox.minLon).x
+const top    = project(bbox.minLat, bbox.minLon).y
+const right  = project(bbox.maxLat, bbox.maxLon).x
+const bottom = project(bbox.maxLat, bbox.maxLon).y
 const w = 900
 const h = (bottom - top) / (right - left) * w
 const translate = (lat, long) => {
