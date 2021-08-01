@@ -12,7 +12,7 @@
 	"dependencies": {
 		"german-states-bbox": "^1.0.0",
 		"projections": "^0.6.0",
-		"vbb-parse-line": "^0.2",
+		"vbb-parse-line": "^0.3.1",
 		"vbb-util": "^0.10.1",
 		"through2-map": "^3.0.0",
 		"vbb-stations": "^5.0.0",
