@@ -16,7 +16,7 @@
 		"vbb-util": "^0.10.1",
 		"through2-map": "^3.0.0",
 		"vbb-stations": "^5.0.0",
-		"pdfkit": "^0.8.0",
+		"pdfkit": "^0.12.1",
 		"stream-filter": "^2.1.0",
 		"through2": "^2.0.3",
 		"vbb-short-station-name": "^0.4.0",
